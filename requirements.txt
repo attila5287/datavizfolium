@@ -9,3 +9,4 @@ psycopg2==2.8.5
 Werkzeug==1.0.1
 wincertstore==0.2
 folium==0.12.1.post1
+requests==2.27.1
