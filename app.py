@@ -117,9 +117,9 @@ def index():
   m
 
   title_html = '''
-             <h5 align="center" style="font-size:20px">
+             <h5 align="center">
              <a href="https://github.com/attila5287/datavizfolium/">
-             time slider coming soon
+             Interactive Monthly Unemployment Rate 2021
              </a>
              </h5>
              '''
