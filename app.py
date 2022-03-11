@@ -77,7 +77,7 @@ def index():
       ]
 
 
-  dates = [str(round(datetime(2021, i+1, 1, 0).timestamp())) for i in range(len(colors['Colorado']))]
+  dates = [str(round(datetime(2021, i+1, 1, 12).timestamp())) for i in range(len(colors['Colorado']))]
 
   style_dict = {}
   for state, cols in colors.items():
