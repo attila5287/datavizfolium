@@ -23,8 +23,76 @@ import folium
 from folium.plugins import TimeSliderChoropleth
 from branca.colormap import linear
 from datetime import datetime 
+from collections import defaultdict
 app = Flask(__name__)
 
+@app.route('/usd')
+def usd():
+  pass
+  urlcsv = 'https://gist.githubusercontent.com/attila5287/3e9ca129a6b29b0d91c4fc786434f1cb/raw/b84a2d1b65ee3d01f94f4a2fc0d6fcbb9fe00e91/currency.csv'
+# urlcsv = 'https://gist.githubusercontent.com/attila5287/d61f5d3ecab4a9170dc5e78c81dec14d/raw/6956d45832acb3518c2747fd73bd044bd50eb475/usd.csv'
+
+  response = urllib.request.urlopen(urlcsv)
+  lines = [ l.decode('utf-8') for l in response.readlines() ]
+  cr = csv.reader(lines)
+  d = defaultdict(list)
+  dates = []
+  for row in [r for r in cr][1:]:
+      pass
+  #     print(row)
+      dates.append(row[-3])
+      d[row[0]].append(float(row[-2]))
+  # print(d['TUR'])
+
+  colors = d
+  for country, rates in d.items():
+      pass
+      cmap = linear.RdPu_09.scale( min(rates), max(rates) )
+      colors[country] = [ cmap(rate) for rate in rates ]
+
+  datetimes = [
+      str(round(datetime(i, 1, 1, 0).timestamp())) 
+      for i in range( int(min(dates)),int(max(dates))  )
+  ]
+
+  style_dict = {}
+  for state, cols in colors.items():
+      pass
+      d={}
+      for date, col in zip(datetimes, cols):
+          pass
+          d[date] = {
+              'color' : col,
+              'opacity' : 0.66,
+          }
+          style_dict[state] = d
+
+  urljson = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DV0101EN-SkillsNetwork/Data%20Files/world_countries.json'
+  geo = json.loads(requests.get(urljson).text)
+
+  m = folium.Map(
+      [36, -10], 
+      tiles="stamentoner", 
+      zoom_start=4,
+      control_scale=True,
+      )
+
+  g = TimeSliderChoropleth(
+      geo,
+      styledict=style_dict,
+      ).add_to(m)
+  
+  title_html = '''
+             <h5 align="center">
+             <a href="https://github.com/attila5287/datavizfolium/">
+             Internal Comparison for USD vs Exchange  Rate 2001-2021
+             </a>
+             </h5>
+             '''
+  m.get_root().html.add_child(folium.Element(title_html))
+
+
+  return m._repr_html_()
 
 @app.route('/')
 def index():
@@ -129,5 +197,6 @@ def index():
   return m._repr_html_()
 
 
+ 
 if __name__ == '__main__':
   app.run(debug=True)
