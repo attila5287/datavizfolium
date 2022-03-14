@@ -40,7 +40,12 @@ def usd():
   for row in [r for r in cr][1:]:
       pass
   #     print(row)
-      dates.append(row[-3])
+      date= row[-3]
+      if not date in dates:
+          pass
+          dates.append(int(date)) 
+      else:
+          pass
       d[row[0]].append(float(row[-2]))
   # print(d['TUR'])
 
@@ -49,11 +54,13 @@ def usd():
       pass
       cmap = linear.RdPu_09.scale( min(rates), max(rates) )
       colors[country] = [ cmap(rate) for rate in rates ]
-
   datetimes = [
-      str(round(datetime(i, 1, 1, 0).timestamp())) 
-      for i in range( int(min(dates)),int(max(dates))  )
+      '{}'.format(round(datetime(i, 1, 1, 0).timestamp()))
+  #     i
+      for i in range( int(min(dates)), int(max(dates)+1) )
   ]
+  datetimes[0] = '0' + datetimes[0]
+  datetimes[1] = '0' + datetimes[1]
 
   style_dict = {}
   for state, cols in colors.items():
@@ -85,7 +92,7 @@ def usd():
   title_html = '''
              <h5 align="center">
              <a href="https://github.com/attila5287/datavizfolium/">
-             Internal Comparison for USD vs Exchange  Rate 2001-2021
+             Internal Comparison for USD vs Exchange Rate 2001-2021
              </a>
              </h5>
              '''
